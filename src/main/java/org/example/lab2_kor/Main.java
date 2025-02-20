@@ -2,8 +2,6 @@ package org.example.lab2_kor;
 
 import org.example.lab2_kor.data.Task;
 import org.example.lab2_kor.impl.*;
-import org.example.lab2_kor.impl.dql.CompositeDLQService;
-import org.example.lab2_kor.impl.dql.ConsoleDLQService;
 import org.example.lab2_kor.impl.dql.FileDLQService;
 import org.example.lab2_kor.impl.logging.CompositeLoggingService;
 import org.example.lab2_kor.impl.logging.ConsoleLoggingService;
@@ -13,11 +11,12 @@ import org.example.lab2_kor.interfaces.ILoggingService;
 import org.example.lab2_kor.interfaces.ITaskService;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
         ILoggingService logger = new CompositeLoggingService(List.of(new FileLoggingService(), new ConsoleLoggingService()));
-        IDeadLetterQueue dlq = new CompositeDLQService(List.of(new ConsoleDLQService(), new FileDLQService()));
+        IDeadLetterQueue dlq = new FileDLQService();
         ITaskService taskService = new TaskManager(logger, dlq);
 
         // 1. Створюємо завдання
@@ -39,7 +38,17 @@ public class Main {
         // 4. Видаляємо неіснуюче завдання (потрапить у DLQ)
         taskService.deleteTask(99);
 
-        // 5. Отримуємо повідомлення з DLQ
-        logger.log("DLQ Message: " + dlq.retrieveFromDLQ());
+        // 5. Чекаємо, щоб всі повторні спроби завершились
+        try {
+            TimeUnit.SECONDS.sleep(15);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        // 6. Виводимо статистику помилок
+        ((TaskManager) taskService).printDLQStatistics();
+
+        // 7. Очищуємо статистику
+        ((TaskManager) taskService).resetDLQStatistics();
     }
 }

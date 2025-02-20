@@ -4,20 +4,22 @@ import org.example.lab2_kor.data.Task;
 import org.example.lab2_kor.interfaces.IDeadLetterQueue;
 import org.example.lab2_kor.interfaces.ILoggingService;
 import org.example.lab2_kor.interfaces.ITaskService;
+import org.example.lab2_kor.impl.dql.FileDLQService;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class TaskManager implements ITaskService {
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final ILoggingService logger;
-    private final IDeadLetterQueue dlq;
+    private final FileDLQService dlq;
     private final Random random = new Random();
 
     public TaskManager(ILoggingService logger, IDeadLetterQueue dlq) {
         this.logger = logger;
-        this.dlq = dlq;
+        this.dlq = (FileDLQService) dlq;
     }
 
     @Override
@@ -91,5 +93,18 @@ public class TaskManager implements ITaskService {
 
         tasks.remove(id);
         logger.log("[INFO] Deleted task with ID: " + id);
+    }
+
+    public void printDLQStatistics() {
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        dlq.printErrorStatistics();
+    }
+
+    public void resetDLQStatistics() {
+        dlq.resetStatistics();
     }
 }
