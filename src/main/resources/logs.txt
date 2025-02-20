@@ -2,3 +2,33 @@
 [2025-02-19 10:32:04] Created task: Task{id=2, title='Написати документацію', description='Додати опис API', completed=false}
 [2025-02-19 10:32:04] Updated task: Task{id=1, title='Розробити API', description='Оновити REST API', completed=false}
 [2025-02-19 10:32:04] Deleted task with ID: 2
+[2025-02-20 09:21:53] Created task: Task{id=1, title='Розробити API', description='Створити REST API для сервісу', completed=false}
+[2025-02-20 09:21:53] Created task: Task{id=2, title='Написати документацію', description='Додати опис API', completed=false}
+[2025-02-20 09:21:53] Updated task: Task{id=1, title='Розробити API', description='Оновити REST API', completed=false}
+[2025-02-20 09:21:53] Deleted task with ID: 2
+[2025-02-20 09:42:43] Created task: Task{id=1, title='Create API', description='Develop REST API for service', completed=false}
+[2025-02-20 09:42:43] Created task: Task{id=2, title='', description='Invalid task', completed=false}
+[2025-02-20 09:42:43] [ERROR] Task not found or an error occurred.
+[2025-02-20 09:42:43] Task with ID 99 not found
+[2025-02-20 09:42:43] DLQ Message: No messages in DLQ
+[2025-02-20 09:42:50] Created task: Task{id=1, title='Create API', description='Develop REST API for service', completed=false}
+[2025-02-20 09:42:50] Created task: Task{id=2, title='', description='Invalid task', completed=false}
+[2025-02-20 09:42:50] [INFO] Retrieved task: Task{id=1, title='Create API', description='Develop REST API for service', completed=false}
+[2025-02-20 09:42:50] Task with ID 99 not found
+[2025-02-20 09:42:50] DLQ Message: No messages in DLQ
+[2025-02-20 09:43:14] Created task: Task{id=1, title='Create API', description='Develop REST API for service', completed=false}
+[2025-02-20 09:43:14] Created task: Task{id=2, title='', description='Invalid task', completed=false}
+[2025-02-20 09:43:14] [ERROR] Task not found or an error occurred.
+[2025-02-20 09:43:14] Task with ID 99 not found
+[2025-02-20 09:43:14] DLQ Message: No messages in DLQ
+[2025-02-20 09:43:19] Created task: Task{id=1, title='Create API', description='Develop REST API for service', completed=false}
+[2025-02-20 09:43:19] Created task: Task{id=2, title='', description='Invalid task', completed=false}
+[2025-02-20 09:43:19] [ERROR] Task not found or an error occurred.
+[2025-02-20 09:43:19] Task with ID 99 not found
+[2025-02-20 09:43:19] DLQ Message: No messages in DLQ
+[2025-02-20 09:46:30] [INFO] Created task: Task{id=1, title='Create API', description='Develop REST API for service', completed=false}
+[2025-02-20 09:46:30] [DLQ] Task creation failed | Title cannot be empty
+[2025-02-20 09:46:30] [DLQ] Task retrieval failed | Timeout while fetching task ID 1
+[2025-02-20 09:46:30] [ERROR] Task not found or an error occurred.
+[2025-02-20 09:46:30] [DLQ] Task deletion failed | Task with ID 99 not found
+[2025-02-20 09:46:30] DLQ Message: [DLQ] Task creation failed | REASON: Title cannot be empty

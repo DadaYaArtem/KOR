@@ -2,6 +2,9 @@ package org.example.lab2_kor;
 
 import org.example.lab2_kor.data.Task;
 import org.example.lab2_kor.impl.*;
+import org.example.lab2_kor.impl.dql.CompositeDLQService;
+import org.example.lab2_kor.impl.dql.ConsoleDLQService;
+import org.example.lab2_kor.impl.dql.FileDLQService;
 import org.example.lab2_kor.impl.logging.CompositeLoggingService;
 import org.example.lab2_kor.impl.logging.ConsoleLoggingService;
 import org.example.lab2_kor.impl.logging.FileLoggingService;
@@ -14,30 +17,29 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         ILoggingService logger = new CompositeLoggingService(List.of(new FileLoggingService(), new ConsoleLoggingService()));
-        IDeadLetterQueue dlq = new InMemoryDLQ();
+        IDeadLetterQueue dlq = new CompositeDLQService(List.of(new ConsoleDLQService(), new FileDLQService()));
         ITaskService taskService = new TaskManager(logger, dlq);
 
-        // Додавання завдань
-        Task task1 = new Task(1, "Розробити API", "Створити REST API для сервісу");
+        // 1. Створюємо завдання
+        Task task1 = new Task(1, "Create API", "Develop REST API for service");
         taskService.createTask(task1);
 
-        Task task2 = new Task(2, "Написати документацію", "Додати опис API");
+        // 2. Створюємо завдання з пустим заголовком (потрапить у DLQ)
+        Task task2 = new Task(2, "", "Invalid task");
         taskService.createTask(task2);
 
-        // Отримання завдання
-        System.out.println("Отримане завдання по id 1: " + taskService.getTaskById(1));
+        // 3. Отримуємо завдання (може потрапити в DLQ через таймаут)
+        Task foundTask = taskService.getTaskById(1);
+        if (foundTask != null) {
+            logger.log("[INFO] Retrieved task: " + foundTask);
+        } else {
+            logger.log("[ERROR] Task not found or an error occurred.");
+        }
 
-        // Оновлення завдання
-        Task updatedTask = new Task(1, "Розробити API", "Оновити REST API");
-        taskService.updateTask(1, updatedTask);
+        // 4. Видаляємо неіснуюче завдання (потрапить у DLQ)
+        taskService.deleteTask(99);
 
-        // Видалення завдання
-        taskService.deleteTask(2);
-
-        // Спроба видалити неіснуюче завдання (потрапить у DLQ)
-        taskService.deleteTask(3);
-
-        // Отримання повідомлень з DLQ
-        System.out.println("DLQ Message: " + dlq.retrieveFromDLQ());
+        // 5. Отримуємо повідомлення з DLQ
+        logger.log("DLQ Message: " + dlq.retrieveFromDLQ());
     }
 }

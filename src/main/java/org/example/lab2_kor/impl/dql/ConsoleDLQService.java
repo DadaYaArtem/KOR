@@ -1,17 +1,18 @@
-package org.example.lab2_kor.impl;
+package org.example.lab2_kor.impl.dql;
 
 import org.example.lab2_kor.interfaces.IDeadLetterQueue;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class InMemoryDLQ implements IDeadLetterQueue {
+public class ConsoleDLQService implements IDeadLetterQueue {
     private final Queue<String> dlq = new LinkedList<>();
 
     @Override
     public void sendToDLQ(String message, String reason) {
-        dlq.add("FAILED: " + message + " | REASON: " + reason);
-        System.err.println("[DLQ]: " + message + " | REASON: " + reason);
+        String fullMessage = "[DLQ] " + message + " | REASON: " + reason;
+        dlq.add(fullMessage);
+        System.err.println(fullMessage);
     }
 
     @Override
