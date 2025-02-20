@@ -1,0 +1,4 @@
+[2025-02-19 10:32:04] Created task: Task{id=1, title='Розробити API', description='Створити REST API для сервісу', completed=false}
+[2025-02-19 10:32:04] Created task: Task{id=2, title='Написати документацію', description='Додати опис API', completed=false}
+[2025-02-19 10:32:04] Updated task: Task{id=1, title='Розробити API', description='Оновити REST API', completed=false}
+[2025-02-19 10:32:04] Deleted task with ID: 2
